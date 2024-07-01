@@ -29,6 +29,7 @@ class APIFilters {
     // Advance filter for price, ratings etc
     let queryStr = JSON.stringify(queryCopy);
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`);
+    // $gt|$gte|$lt|$lte are comparison operators for MongoDB
 
     this.query = this.query.find(JSON.parse(queryStr));
     return this;
@@ -39,6 +40,7 @@ class APIFilters {
     const skip = resPerPage * (currentPage - 1);
 
     this.query = this.query.limit(resPerPage).skip(skip);
+    // Limit amount of results per page and skip certain amount of results
     return this;
   }
 }
