@@ -4,6 +4,7 @@ import productRoutes from './routes/products.js'
 import authRoutes from './routes/auth.js'
 import { connectDatabase } from './config/dbConnect.js'
 import errorMiddleware from './middlewares/errors.js'
+import cookieParser from 'cookie-parser'
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
@@ -19,6 +20,7 @@ dotenv.config({path: 'backend/config/config.env'})
 connectDatabase()
 
 app.use(express.json()) // Use to parse json data
+app.use(cookieParser()) // For handling cookies
 
 app.use("/api/v1", productRoutes)
 app.use("/api/v1", authRoutes)
