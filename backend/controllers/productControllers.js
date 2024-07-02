@@ -1,5 +1,5 @@
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js"
-import Product from "../models/products.js"
+import Product from "../models/product.js"
 import APIFilters from "../utils/apiFilters.js"
 import ErrorHandler from "../utils/errorHandler.js"
 
