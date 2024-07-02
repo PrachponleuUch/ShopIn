@@ -1,7 +1,5 @@
-import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import crypto from "crypto";
+import mongoose from "mongoose"
+import bcrypt from "bcryptjs"
 
 const userSchema = new mongoose.Schema(
   {
@@ -35,20 +33,14 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Encrypting password before saving the user
-userSchema.pre("save", async function (next) {
+// Encrypt the password before saving the user
+userSchema.pre("save", async function (next) { // "this" is undefined in arrow function
+  // If password is the same, move to the next function
   if (!this.isModified("password")) {
     next();
   }
 
   this.password = await bcrypt.hash(this.password, 10);
 });
-
-// Return JWT Token
-userSchema.methods.getJwtToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_TIME,
-  });
-};
 
 export default mongoose.model("User", userSchema);

@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import productRoutes from './routes/products.js'
+import authRoutes from './routes/auth.js'
 import { connectDatabase } from './config/dbConnect.js'
 import errorMiddleware from './middlewares/errors.js'
 
@@ -20,6 +21,7 @@ connectDatabase()
 app.use(express.json()) // Use to parse json data
 
 app.use("/api/v1", productRoutes)
+app.use("/api/v1", authRoutes)
 
 app.use(errorMiddleware)
 
