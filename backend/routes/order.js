@@ -1,6 +1,7 @@
 import express from 'express'
 import { authorizeRoles, isAuthenticatedUser } from '../middlewares/auth.js'
 import { deleteOrder, getAllOrders, getMyOrders, getOrderDetails, newOrder, updateOrder } from '../controllers/orderControllers.js'
+import { createProductReview } from '../controllers/productControllers.js'
 
 const router = express.Router()
 router.route('/orders/new').post(isAuthenticatedUser, newOrder)
@@ -10,6 +11,8 @@ router.route('/admin/orders').get(isAuthenticatedUser, authorizeRoles('admin'), 
 router.route('/admin/orders/:id')
   .put(isAuthenticatedUser, authorizeRoles('admin'), updateOrder)
   .delete(isAuthenticatedUser, authorizeRoles('admin'), deleteOrder)
+router.route('/reviews').put(isAuthenticatedUser, createProductReview)
+
 
 
 
