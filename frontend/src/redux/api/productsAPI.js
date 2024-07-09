@@ -7,6 +7,7 @@ export const productApi = createApi({
     // builder.query for GET req, builder.mutation for CUD req
     getProducts: builder.query({ // Get all products
       query: (params) => "/products",
+      keepUnusedDataFor: 60
     })
   }),
 });
