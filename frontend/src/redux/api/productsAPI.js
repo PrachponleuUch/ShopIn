@@ -6,7 +6,12 @@ export const productApi = createApi({
   endpoints: (builder) => ({
     // builder.query for GET req, builder.mutation for CUD req
     getProducts: builder.query({ // Get all products
-      query: (params) => "/products",
+      query: (params) => ({
+        url: "/products",
+        params: {
+          page: params?.page
+        }
+      }),
       keepUnusedDataFor: 60
     }),
     getProductDetails: builder.query({
