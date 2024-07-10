@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './components/Home';
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
-import toast, { Toaster, ToastBar } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import ProductDetails from './components/product/ProductDetails';
 
 
