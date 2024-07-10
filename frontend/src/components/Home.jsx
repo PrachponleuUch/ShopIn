@@ -6,6 +6,7 @@ import Loader from './layout/Loader.jsx'
 import toast from 'react-hot-toast'
 import CustomPagination from './layout/CustomPagination.jsx'
 import { useSearchParams } from 'react-router-dom'
+import Filter from './layout/Filter.jsx'
 
 const Home = () => {
 
@@ -13,6 +14,11 @@ const Home = () => {
   const page = searchParams.get('page') || 1
   const keyword = searchParams.get('keyword') || ''
   const params = { page, keyword }
+  const min = searchParams.get('min') 
+  const max = searchParams.get('max') 
+
+  min != null && (params.min = min)
+  max != null && (params.max = max)
 
   const { data, isLoading, error, isError } = useGetProductsQuery(params)
 
@@ -32,7 +38,7 @@ const Home = () => {
         <div className="row">
           {keyword && (
             <div className="col-6 col-md-3 mt-5">
-              <p>FILTERS</p>
+              <Filter/>
             </div>
           )}
           <div className={keyword ? `col-12 col-sm-6 col-md-9` : "col-12 col-sm-6 col-md-12"}>
