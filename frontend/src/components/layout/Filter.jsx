@@ -22,7 +22,7 @@ const Filter = () => {
 
     checkboxes.forEach((item) => {
       if (item !== checkbox) item.checked = false;
-    });
+    }); // Only one checked at any one time
 
     if (checkbox.checked === false) {
       // Delete filter from query
@@ -56,6 +56,7 @@ const Filter = () => {
     navigate(path);
   };
 
+  // Make sure checkbox value stays the same even when reloaded
   const defaultCheckHandler = (checkboxType, checkboxValue) => {
     const value = searchParams.get(checkboxType);
     if (checkboxValue === value) return true;

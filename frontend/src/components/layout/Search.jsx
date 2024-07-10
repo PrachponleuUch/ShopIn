@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Search = () => {
   const [keyword, setKeyword] = useState("");
@@ -15,6 +15,8 @@ const Search = () => {
     }
   };
 
+  let [searchParams] = useSearchParams()
+
   return (
     <form onSubmit={submitHandler}>
       <div className="input-group">
@@ -25,7 +27,7 @@ const Search = () => {
           className="form-control"
           placeholder="Enter Product Name ..."
           name="keyword"
-          value={keyword}
+          value={keyword !== null ? keyword : searchParams.get('keyword')}
           onChange={(e) => setKeyword(e.target.value)}
         />
         <button id="search_btn" className="btn" type="submit">

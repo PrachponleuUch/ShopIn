@@ -16,9 +16,13 @@ const Home = () => {
   const params = { page, keyword }
   const min = searchParams.get('min') 
   const max = searchParams.get('max') 
+  const category = searchParams.get('category') 
+
 
   min != null && (params.min = min)
   max != null && (params.max = max)
+  category != null && (params.category = category)
+
 
   const { data, isLoading, error, isError } = useGetProductsQuery(params)
 
