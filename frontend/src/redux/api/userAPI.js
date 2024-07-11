@@ -42,7 +42,21 @@ export const userApi = createApi({
       },
       invalidatesTags: ['User'] // Make getMe to get user info again
     }),
+    updatePassword: builder.mutation({
+      query(body) {
+        return {
+          url: '/password/update',
+          method: 'PUT',
+          body
+        }
+      },
+    }),
   }),
 });
 
-export const { useGetMeQuery, useUpdateUserMutation, useUploadAvatarMutation } = userApi;
+export const { 
+  useGetMeQuery, 
+  useUpdateUserMutation, 
+  useUploadAvatarMutation, 
+  useUpdatePasswordMutation 
+} = userApi;
