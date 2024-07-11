@@ -1,7 +1,10 @@
 import React from 'react'
 import Search from './Search'
+import { useGetMeQuery } from '../../redux/api/userAPI'
 
 const Header = () => {
+  const { data } = useGetMeQuery()
+
   return (
     <nav className="navbar row">
       <div className="col-12 col-md-3 ps-5">
