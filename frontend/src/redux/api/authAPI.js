@@ -38,10 +38,14 @@ export const authApi = createApi({
           console.log(error)
         }
       }
+    }),
+    logout: builder.query({
+      query: () => '/logout'
     })
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation, useLazyLogoutQuery } = authApi;
+// Lazy logout only log user out when logout button is clicked
