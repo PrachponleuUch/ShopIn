@@ -20,7 +20,7 @@ dotenv.config({path: 'backend/config/config.env'})
 
 connectDatabase()
 
-app.use(express.json()) // Use to parse json data
+app.use(express.json({ limit: '10mb' })) // Use to parse json data with the limit of 10mb (file)
 app.use(cookieParser()) // For handling cookies
 
 app.use("/api/v1", productRoutes)
