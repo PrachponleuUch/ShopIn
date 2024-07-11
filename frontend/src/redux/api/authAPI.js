@@ -12,10 +12,19 @@ export const authApi = createApi({
           body,
         }
       }
+    }),
+    register: builder.mutation({
+      query(body) {
+        return {
+          url: '/register',
+          method: 'POST',
+          body,
+        }
+      }
     })
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation } = authApi;
