@@ -3,6 +3,7 @@ import UserLayout from "../layout/UserLayout";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import MetaData from "../layout/MetaData";
 import { useUploadAvatarMutation } from "../../redux/api/userAPI";
 
 const UploadAvatar = () => {
@@ -52,51 +53,55 @@ const UploadAvatar = () => {
   };
 
   return (
-    <UserLayout>
-      <div className="row wrapper">
-        <div className="col-10 col-lg-8">
-          <form className="shadow rounded bg-body" onSubmit={submitHandler}>
-            <h2 className="mb-4">Upload Avatar</h2>
-
-            <div className="mb-3">
-              <div className="d-flex align-items-center">
-                <div className="me-3">
-                  <figure className="avatar item-rtl">
-                    <img
-                      src={avatarPreview}
-                      className="rounded-circle"
-                      alt="image"
+    <>
+      <MetaData title={"Upload Avatar"} />
+      <UserLayout>
+        <div className="row wrapper">
+          <div className="col-10 col-lg-8">
+            <form className="shadow rounded bg-body" onSubmit={submitHandler}>
+              <h2 className="mb-4">Upload Avatar</h2>
+  
+              <div className="mb-3">
+                <div className="d-flex align-items-center">
+                  <div className="me-3">
+                    <figure className="avatar item-rtl">
+                      <img
+                        src={avatarPreview}
+                        className="rounded-circle"
+                        alt="image"
+                      />
+                    </figure>
+                  </div>
+                  <div className="input-foam">
+                    <label className="form-label" htmlFor="customFile">
+                      Choose Avatar
+                    </label>
+                    <input
+                      type="file"
+                      name="avatar"
+                      className="form-control"
+                      id="customFile"
+                      accept="images/*"
+                      onChange={onChange}
                     />
-                  </figure>
-                </div>
-                <div className="input-foam">
-                  <label className="form-label" htmlFor="customFile">
-                    Choose Avatar
-                  </label>
-                  <input
-                    type="file"
-                    name="avatar"
-                    className="form-control"
-                    id="customFile"
-                    accept="images/*"
-                    onChange={onChange}
-                  />
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <button
-              id="register_button"
-              type="submit"
-              className="btn w-100 py-2"
-              disabled={isLoading}
-            >
-              {isLoading ? "Uploading..." : "Upload"}
-            </button>
-          </form>
+  
+              <button
+                id="register_button"
+                type="submit"
+                className="btn w-100 py-2"
+                disabled={isLoading}
+              >
+                {isLoading ? "Uploading..." : "Upload"}
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-    </UserLayout>
+      </UserLayout>
+    </>
+   
   );
 };
 
