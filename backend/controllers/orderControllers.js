@@ -35,83 +35,99 @@ export const newOrder = catchAsyncErrors(async (req, res, next) => {
 
 // Get order details ==>  /api/v1/orders/:id
 export const getOrderDetails = catchAsyncErrors(async (req, res, next) => {
-  const order = await Order.findById(req?.params.id).populate('user', 'name email')
+  const order = await Order.findById(req?.params.id).populate(
+    "user",
+    "name email"
+  );
   if (!order) {
-    return next(new ErrorHandler('No order found with this ID', 404))
+    return next(new ErrorHandler("No order found with this ID", 404));
   }
 
   res.status(200).json({
-    order
-  })
-})
+    order,
+  });
+});
 
 // Get user orders ==>  /api/v1/me/orders
 export const getMyOrders = catchAsyncErrors(async (req, res, next) => {
-  const orders = await Order.find({user: req.user._id})
-  
+  const orders = await Order.find({ user: req.user._id });
 
   res.status(200).json({
-    orders
-  })
-})
+    orders,
+  });
+});
 
 // Get all order details ==>  /api/v1/admin/orders/
 export const getAllOrders = catchAsyncErrors(async (req, res, next) => {
-  const orders = await Order.find()
+  const orders = await Order.find();
 
   res.status(200).json({
-    orders
-  })
-})
+    orders,
+  });
+});
 
 // Update order details ==>  /api/v1/admin/orders/:id
 export const updateOrder = catchAsyncErrors(async (req, res, next) => {
-  const order = await Order.findById(req?.params.id)
+  const order = await Order.findById(req?.params.id);
 
   if (!order) {
-    return next(new ErrorHandler('No order found with this ID', 404))
+    return next(new ErrorHandler("No order found with this ID", 404));
   }
 
-  if (order?.orderStatus === 'Delivered') {
-    return next(new ErrorHandler('Order has already been delivered', 400))
+  if (order?.orderStatus === "Delivered") {
+    return next(new ErrorHandler("Order has already been delivered", 400));
   }
 
-  order?.orderItems.forEach(async (item) => {
-    const product = await Product.findById(item?.product?.toString())
+  let productNotFound = false;
+
+  // Update products stock
+  for (const item of order.orderItems) {
+    const product = await Product.findById(item?.product?.toString());
     if (!product) {
-      return next(new ErrorHandler('No product found with this ID', 404))
+      productNotFound = true;
+      break;
     }
-    product.stock = product.stock - item.quantity
-    await product.save({ validateBeforeSave: false })
-  })
+    product.stock = product.stock - item.quantity;
+    await product.save({ validateBeforeSave: false });
+  }
 
-  order.orderStatus = req.body.status 
-  order.deliveredAt = Date.now()
+  if (productNotFound) {
+    return next(
+      new ErrorHandler("No product found with one or more IDs.", 404)
+    );
+  }
 
-  await order.save()
+  order.orderStatus = req.body.status;
+  order.deliveredAt = Date.now();
+
+  if (req?.body?.paymentStatus && order.paymentMethod === "COD") {
+    order.paymentInfo.id = order._id;
+    order.paymentInfo.status = req?.body?.paymentStatus;
+  }
+
+  await order.save();
 
   res.status(200).json({
-    success: true
-  })
-})
+    success: true,
+  });
+});
 
 // Delete order ==>  /api/v1/admin/orders/:id
 export const deleteOrder = catchAsyncErrors(async (req, res, next) => {
-  const order = await Order.findById(req?.params.id)
+  const order = await Order.findById(req?.params.id);
 
-  if(!order) {
-    return next(new ErrorHandler('Order with this ID not found', 404))
+  if (!order) {
+    return next(new ErrorHandler("Order with this ID not found", 404));
   }
 
-  await order.deleteOne()
+  await order.deleteOne();
 
   res.status(200).json({
-    success: true
-  })
-})
+    success: true,
+  });
+});
 
 async function getSalesData(startDate, endDate) {
-
   // Use aggregate to write complex query
   const salesData = await Order.aggregate([
     {
