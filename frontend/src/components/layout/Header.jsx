@@ -62,7 +62,7 @@ const Header = () => {
 
               <Link className="dropdown-item" to="/me/profile"> Profile </Link>
 
-              <Link className="dropdown-item text-danger" to="/" onClick={logoutHandler}> Logout </Link>
+              <Link className="dropdown-item text-danger"  onClick={logoutHandler}> Logout </Link>
             </div>
           </div>
         ) : (!isLoading && (

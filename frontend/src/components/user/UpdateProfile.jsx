@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import UserLayout from "../layout/UserLayout";
 import MetaData from "../layout/MetaData";
-import { useUpdateUserMutation } from "../../redux/api/userAPI";
+import { useUpdateProfileMutation } from "../../redux/api/userAPI";
 
 const UpdateProfile = () => {
   const [name, setName] = useState("");
@@ -12,7 +12,7 @@ const UpdateProfile = () => {
 
   const navigate = useNavigate();
 
-  const [updateProfile, { isLoading, error, isSuccess }] = useUpdateUserMutation();
+  const [updateProfile, { isLoading, error, isSuccess }] = useUpdateProfileMutation();
 
   const { user } = useSelector((state) => state.auth);
 

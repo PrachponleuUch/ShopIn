@@ -1,82 +1,113 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { setIsAuthenticated, setLoading, setUser } from '../features/userSlice';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { setIsAuthenticated, setLoading, setUser } from "../features/userSlice";
 
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1" }),
-  tagTypes: ["User"],
+  tagTypes: ["User", "AdminUsers", "AdminUser"],
   endpoints: (builder) => ({
     getMe: builder.query({
       query: () => `/me`,
       transformResponse: (response) => response.user, // Transform response to response.user
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled
-          dispatch(setUser(data)) // setUser to response.user
-          dispatch(setIsAuthenticated(true))
-          dispatch(setLoading(false))
+          const { data } = await queryFulfilled;
+          dispatch(setUser(data)); // setUser to response.user
+          dispatch(setIsAuthenticated(true));
+          dispatch(setLoading(false));
         } catch (error) {
-          dispatch(setLoading(false))
-          console.log(error)
+          dispatch(setLoading(false));
+          console.log(error);
         }
       },
-      providesTags: ['User']
+      providesTags: ["User"],
     }),
-    updateUser: builder.mutation({
+    updateProfile: builder.mutation({
       query(body) {
         return {
-          url: '/me/update',
-          method: 'PUT',
-          body
-        }
+          url: "/me/update",
+          method: "PUT",
+          body,
+        };
       },
-      invalidatesTags: ['User'] // Make getMe to get user info again
+      invalidatesTags: ["User"], // Make getMe to get user info again
     }),
     uploadAvatar: builder.mutation({
       query(body) {
         return {
-          url: '/me/upload_avatar',
-          method: 'PUT',
-          body
-        }
+          url: "/me/upload_avatar",
+          method: "PUT",
+          body,
+        };
       },
-      invalidatesTags: ['User'] // Make getMe to get user info again
+      invalidatesTags: ["User"], // Make getMe to get user info again
     }),
     updatePassword: builder.mutation({
       query(body) {
         return {
-          url: '/password/update',
-          method: 'PUT',
-          body
-        }
+          url: "/password/update",
+          method: "PUT",
+          body,
+        };
       },
     }),
     forgotPassword: builder.mutation({
       query(body) {
         return {
-          url: '/password/forgot',
-          method: 'POST',
-          body
-        }
+          url: "/password/forgot",
+          method: "POST",
+          body,
+        };
       },
     }),
     resetPassword: builder.mutation({
-      query({token, body}) {
+      query({ token, body }) {
         return {
           url: `/password/reset/${token}`,
-          method: 'PUT',
-          body
-        }
+          method: "PUT",
+          body,
+        };
       },
+    }),
+    getAdminUsers: builder.query({
+      query: () => `/admin/users`,
+      providesTags: ["AdminUsers"],
+    }),
+    getUserDetails: builder.query({
+      query: (id) => `/admin/users/${id}`,
+      providesTags: ["AdminUser"],
+    }),
+    updateUser: builder.mutation({
+      query({ id, body }) {
+        return {
+          url: `/admin/users/${id}`,
+          method: "PUT",
+          body,
+        };
+      },
+      invalidatesTags: ["AdminUsers"],
+    }),
+    deleteUser: builder.mutation({
+      query(id) {
+        return {
+          url: `/admin/users/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["AdminUsers"],
     }),
   }),
 });
 
-export const { 
-  useGetMeQuery, 
-  useUpdateUserMutation, 
-  useUploadAvatarMutation, 
+export const {
+  useGetMeQuery,
+  useUpdateProfileMutation,
+  useUploadAvatarMutation,
   useUpdatePasswordMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
+  useGetAdminUsersQuery,
+  useGetUserDetailsQuery,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
 } = userApi;
