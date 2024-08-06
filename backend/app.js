@@ -49,9 +49,9 @@ if(process.env.NODE_ENV === "PRODUCTION") {
 
 
 app.use(errorMiddleware)
-
-const server = app.listen((process.env.PORT), ()=> {
-  console.log(`Server started on PORT: ${process.env.PORT} in ${process.env.NODE_ENV} mode.`)
+const port = process.env.PORT || 4000;
+const server = app.listen((port), ()=> {
+  console.log(`Server started on PORT: ${port} in ${process.env.NODE_ENV} mode.`)
 })
 
 // Handle unhandled promise rejections
